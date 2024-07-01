@@ -1,0 +1,30 @@
+-- Function to teleport a player to a random position nearby
+local function teleportPlayerRandomly(player)
+    if player and player.Character and player.Character:IsDescendantOf(game.Workspace) then
+        local character = player.Character
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        
+        if humanoidRootPart then
+            local currentPosition = humanoidRootPart.Position
+            local randomOffset = Vector3.new(math.random(-20, 20), 10, math.random(-20, 20)) -- Adjust range as needed
+            local newPosition = currentPosition + randomOffset
+            
+            -- Teleport the player to the new position
+            humanoidRootPart.CFrame = CFrame.new(newPosition)
+        end
+    end
+end
+
+-- Function to teleport all players in the game randomly
+local function teleportAllPlayersRandomly()
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        teleportPlayerRandomly(player)
+    end
+end
+
+-- Activate teleportation (for example, bind to a key press)
+game:GetService("UserInputService").InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.T then -- Change the key as needed
+        teleportAllPlayersRandomly()
+    end
+end)
